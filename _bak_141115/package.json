@@ -13,14 +13,14 @@
 
     "grunt-contrib-sass": "~0.8.1",
     "grunt-contrib-compass": "~1.0.1",
-    "grunt-contrib-cssmin": "~0.10.0",
-    
+    "grunt-contrib-cssmin": "~0.10.0",//CSSミニファイ
+
     "grunt-contrib-coffee": "~0.11.1",
-    "grunt-contrib-uglify": "~0.6.0",
+    "grunt-contrib-uglify": "~0.6.0",//JSミニファイ
     
-    "grunt-autoprefixer": "^1.0.1",
+    "grunt-autoprefixer": "^1.0.1",//ベンダープレフィックスありなし判定
     
-    "load-grunt-tasks": "~0.6.0",
-    "grunt-bower-task": "^0.4.0"
+    "load-grunt-tasks": "~0.6.0",//gruntの複数のタスクを読込
+    "grunt-bower-task": "^0.4.0"//bowerレイアウト
   }
 }
