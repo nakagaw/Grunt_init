@@ -1,6 +1,6 @@
-/_lib
-/_bower_components
-/node_modules
-/.sass-cache
-
+_lib/
+_bower_components/
+node_modules/
+.sass-cache/
+npm-debug.log
 .DS_Store
