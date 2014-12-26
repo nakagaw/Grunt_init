@@ -11,6 +11,11 @@
 
 #grunt
 
+_global_var.scss
+_layout.scss
+_parts.scss
+作成済み
+
 @inport 'normalize';
 @import 'global_var', 'layout', 'parts';
 パーシャルファイルをインポート済み。

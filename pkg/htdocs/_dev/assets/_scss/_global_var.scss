@@ -4,6 +4,5 @@ $sub2_color : #f00;
 
 @mixin box_width($val) {
   width: $val;
-  //height: $val + 100; 出ない
-  /* これはでる */
+  height: $val + 100;
 }

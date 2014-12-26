@@ -25,10 +25,10 @@ label,input[type="checkbox"] {
 }
 
 .delete:hover {
-	color: #ddd;
+	color: $main_color;
 }
 
 .completed {
 	text-decoration: line-through;
-	color: #888;
+	color: $sub1_color;
 }
