@@ -21,6 +21,12 @@ _dev以下に、_libから必要なファイルを移動。
 #grunt
 
 ボイラーテンプレートからもってきてmain.scssにリネームしただけで
+_global_var.scss
+_layout.scss
+_parts.scss
+は自分で用意する
+
+@inport 'compass';
 
 @inport 'normalize';
 
