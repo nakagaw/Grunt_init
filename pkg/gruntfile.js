@@ -1,10 +1,11 @@
 'use strict';
 
 module.exports = function(grunt) {
-  
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    
+
+
     //ディレクトリの定義
     dir: {
       dev:    'htdocs/_dev/',
@@ -17,7 +18,8 @@ module.exports = function(grunt) {
       img:    'assets/img/',
       projectRoot: ''
     },
-    
+
+
     //bower task
     bower: {
       install: {
@@ -31,7 +33,8 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+
+
     //bowerライブラリ郡から主要ファイル（_lib）コピー
     copy: {
       init: {
@@ -77,6 +80,7 @@ module.exports = function(grunt) {
           }
         ]
       },
+
       //_devからreleaseへ必要なファイルをコピー
       build: {
         files: [
@@ -112,7 +116,8 @@ module.exports = function(grunt) {
         ]
       }
     },
-    
+
+
 //    //SASSコンパイル
 //    sass: {
 //      dist: {
@@ -132,35 +137,39 @@ module.exports = function(grunt) {
 //        ]
 //      }
 //    },
-    
 
-    compass: {
-      dist: {
-          options: {
-              sassDir:                 '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>',
-              cssDir:                  '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>',
-              imagesDir:               '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
-              generatedImagesDir:      '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
-              httpGeneratedImagesPath: '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
-              javascriptsDir:          '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
-              outputStyle: 'expanded',
-              noLineComments: true,
-              relativeAssets: false,
-              assetCacheBuster: false
-          }
-      }
-    },
-    
-//    compassMultiple: {
-//      options: {
-//        sassDir:   '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>',
-//        cssDir:    '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>',
-//        imagesDir: '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
-//        environment: 'production',
-//        outputStyle: 'expanded'
+
+//    compass: {
+//      dist: {
+//          options: {
+//              sassDir:                 '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>',
+//              cssDir:                  '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>',
+//              imagesDir:               '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
+//              generatedImagesDir:      '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
+//              httpGeneratedImagesPath: '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
+//              javascriptsDir:          '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
+//              outputStyle: 'expanded',
+//              noLineComments: true,
+//              relativeAssets: false,
+//              assetCacheBuster: false
+//          }
 //      }
 //    },
-    
+
+
+    compassMultiple: {
+      options: {
+        sassDir:   '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>',
+        cssDir:    '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>',
+        imagesDir: '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
+        environment: 'production',
+        outputStyle: 'expanded',
+        time: true
+      },
+      common : {},
+    },
+
+
     autoprefixer: {
       target: {
         expand: true,
@@ -185,7 +194,6 @@ module.exports = function(grunt) {
 //    },
 
 
-    
     //_dev以下の監視
     watch: {
       livereload: {
@@ -204,15 +212,16 @@ module.exports = function(grunt) {
       },
       scss: {
         files: '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>**/*.scss',
-        tasks: ['compass']
+        //tasks: ['compass']
+        tasks: ['compassMultiple']
       },
       js: {
         files: '<%= dir.dev %><%= dir.projectRoot %><%= dir.js %>**/*.js',
 //        tasks: ['coffee']
       }
     },
-    
-    
+
+
     //ローカルサーバー起動後自動でオープン
     connect: {
       options: {
@@ -227,15 +236,16 @@ module.exports = function(grunt) {
         }
       }
     },
-    
-    
+
+
     //コマンド　grunt release（すべてではない）
     //_libを削除,release以下に納品ファイルまとめ
     clean: {
       init: ['_lib/'],
       build: ['<%= dir.release %>']
     },
-    
+
+
     //CSSミニファイ
     cssmin: {
       combine: {
@@ -244,7 +254,8 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+
+
     //JSのミニファイ
     uglify: {
       js: {
@@ -255,44 +266,48 @@ module.exports = function(grunt) {
     }
     
   });
-  
-  
-  
+
+
+
   //タスクをすべて読み込む
   require('load-grunt-tasks')(grunt);
   
-  //grunt initでbowerインストール＆コピー、もろもろディレクトリ構築
-  grunt.registerTask("init", 
-    function() {
-      grunt.task.run('bower:install');
-      grunt.task.run('copy:init');
-      grunt.file.defaultEncoding = 'utf8';
-      grunt.file.mkdir('htdocs');
-      grunt.file.mkdir('htdocs/_dev');
-      grunt.file.mkdir('htdocs/_dev/assets');
-      grunt.file.mkdir('htdocs/_dev/assets/css');
-      grunt.file.mkdir('htdocs/_dev/assets/img');
-      grunt.file.mkdir('htdocs/_dev/assets/_scss');
-//    grunt.file.mkdir('htdocs/_dev/assets/_coffee');
-      grunt.file.mkdir('htdocs/_dev/assets/js');
-      grunt.file.mkdir('htdocs/_dev/assets/js/components');
-      grunt.file.mkdir('htdocs/release');
-      grunt.file.mkdir('htdocs/release/assets');
-      grunt.file.mkdir('htdocs/release/assets/css');
-      grunt.file.mkdir('htdocs/release/assets/img');
-      grunt.file.mkdir('htdocs/release/assets/js');
-      grunt.file.mkdir('htdocs/release/assets/js/components');
-//    return grunt.task.run('clean:init');
-    }
-  );
-  
+//  
+//  //grunt initでbowerインストール＆コピー、もろもろディレクトリ構築
+//  grunt.registerTask("init", 
+//    function() {
+//      grunt.task.run('bower:install');
+//      grunt.task.run('copy:init');
+//      grunt.file.defaultEncoding = 'utf8';
+//      grunt.file.mkdir('htdocs');
+//      grunt.file.mkdir('htdocs/_dev');
+//      grunt.file.mkdir('htdocs/_dev/assets');
+//      grunt.file.mkdir('htdocs/_dev/assets/css');
+//      grunt.file.mkdir('htdocs/_dev/assets/img');
+//      grunt.file.mkdir('htdocs/_dev/assets/_scss');
+////    grunt.file.mkdir('htdocs/_dev/assets/_coffee');
+//      grunt.file.mkdir('htdocs/_dev/assets/js');
+//      grunt.file.mkdir('htdocs/_dev/assets/js/components');
+//      grunt.file.mkdir('htdocs/release');
+//      grunt.file.mkdir('htdocs/release/assets');
+//      grunt.file.mkdir('htdocs/release/assets/css');
+//      grunt.file.mkdir('htdocs/release/assets/img');
+//      grunt.file.mkdir('htdocs/release/assets/js');
+//      grunt.file.mkdir('htdocs/release/assets/js/components');
+////    return grunt.task.run('clean:init');
+//    }
+//  );
+
+
   //gruntでローカルサーバーと監視
   grunt.registerTask("default", [
-    'compass',
+    //'compass',
+    'compassMultiple',
     'connect:livereload',
     'watch'
   ]);
-  
+
+
   //releaseでJS、CSSのミニファイ、release以下にコピー
   return grunt.registerTask("release", [
     'clean:build',
@@ -300,4 +315,6 @@ module.exports = function(grunt) {
     'uglify',
     'cssmin'
   ]);
+
+
 };
