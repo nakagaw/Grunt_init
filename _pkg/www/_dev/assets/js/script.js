@@ -1,0 +1,1 @@
+function a(){console.log("Hello A!")}function b(){console.log("Hello B!")}a(),b();
