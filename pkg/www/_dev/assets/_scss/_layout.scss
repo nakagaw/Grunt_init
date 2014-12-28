@@ -1,3 +1,5 @@
+@charset 'UTF-8';
+
 body {
   padding: 100px;
 }
@@ -7,11 +9,11 @@ body {
 }
 
 .border-radius2 {
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 .gradient {
-  @include background-image(linear-gradient(to right, #fff, #000));
+  @include background-image(linear-gradient(to right, yellow, #000));
 }
 
 .gradient2 {
