@@ -8,14 +8,14 @@ module.exports = function(grunt) {
 
     //ディレクトリの定義
     dir: {
-      dev:    'htdocs/_dev/',
-      release:'htdocs/release/',
-      //coffee: 'assets/_coffee/',
+      dev:    'www/_dev/',
+      build:  'www/build/',
+      script: 'assets/_script/',
       js:     'assets/js/',
-      assets: 'assets/js/components/',
       scss:   'assets/_scss/',
       css:    'assets/css/',
       img:    'assets/img/',
+      components:  'components/',
       projectRoot: ''
     },
 
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
         options: {
           targetDir: './_lib', //ライブラリの主要ファイル配置先
           layout: 'byComponent', // レイアウトbyType or byComponent
-          verbose: false,　// ログの詳細を出すかどうか
+          verbose: false, // ログの詳細を出すかどうか
           install: true, //grunt init実行時にbower installを実行
           cleanTargetDir: false, // targetDirを削除
           cleanBowerDir: false // bowerのcomponentsディレクトリを削除するかどうか
@@ -43,23 +43,29 @@ module.exports = function(grunt) {
             expand: true,//ダイナミック拡張有効
             cwd: '_lib/jquery/',
             src: ["*"],
-            dest: '<%= dir.dev %><%= dir.projectRoot %><%= dir.assets %>',
+            dest: '<%= dir.dev %><%= dir.projectRoot %><%= dir.js %><%= dir.components %>',
             filter: 'isFile',
             dot: false
           }, {
             expand: true,
             cwd: '_lib/html5-boilerplate/js/vendor/',
             src: ["**/modernizr*.js"],
-            dest: '<%= dir.dev %><%= dir.projectRoot %><%= dir.assets %>',
+            dest: '<%= dir.dev %><%= dir.projectRoot %><%= dir.js %><%= dir.components %>',
             filter: 'isFile',
-            dot: false
+            dot: false,
+            rename: function(dest, src) {
+            return dest + 'modernizr.js';
+            }
           }, {
             expand: true,
             cwd: '_lib/html5-boilerplate/',
             src: ["index.html"],
             dest: '<%= dir.dev %>',
             filter: 'isFile',
-            dot: false
+            dot: false,
+            rename: function(dest, src) {
+            return dest + 'index_html5-boilerplate.html';
+            }
           }, {
             expand: true,
             cwd: '_lib/html5-boilerplate/css/',
@@ -81,35 +87,35 @@ module.exports = function(grunt) {
         ]
       },
 
-      //_devからreleaseへ必要なファイルをコピー
+      //_devからbuildへ必要なファイルをコピー
       build: {
         files: [
           {
             expand: true,
             cwd: "<%= dir.dev %>",
             src: ["**/*.html"],
-            dest: "<%= dir.release %>",
+            dest: "<%= dir.build %>",
             filter: 'isFile',
             dot: false
           }, {
             expand: true,
             cwd: "<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>",
             src: ["**/*.css"],
-            dest: "<%= dir.release %><%= dir.css %>",
+            dest: "<%= dir.build %><%= dir.css %>",
             filter: 'isFile',
             dot: false
           }, {
             expand: true,
             cwd: "<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>",
             src: ["**/*.{gif,jpeg,jpg,png,svg,webp}"],
-            dest: "<%= dir.release %><%= dir.img %>",
+            dest: "<%= dir.build %><%= dir.img %>",
             filter: 'isFile',
             dot: false
           }, {
             expand: true,
             cwd: "<%= dir.dev %><%= dir.projectRoot %><%= dir.js %>",
             src: ["**/*.js"],
-            dest: "<%= dir.release %><%= dir.js %>",
+            dest: "<%= dir.build %><%= dir.js %>",
             filter: 'isFile',
             dot: false
           }
@@ -118,106 +124,27 @@ module.exports = function(grunt) {
     },
 
 
-//    //SASSコンパイル
-//    sass: {
-//      dist: {
-//        options: {
-//          style: 'expanded',
-//          sourcemap: 'none'//,
-//          //compass: 'true'
-//        },
-//        files: [
-//          {
-//            expand: true,
-//            cwd: '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>',
-//            src: ['*.scss'],
-//            dest: '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>',
-//            ext: '.css'
-//          }
-//        ]
-//      }
-//    },
-
-
-//    compass: {
-//      dist: {
-//          options: {
-//              sassDir:                 '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>',
-//              cssDir:                  '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>',
-//              imagesDir:               '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
-//              generatedImagesDir:      '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
-//              httpGeneratedImagesPath: '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
-//              javascriptsDir:          '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
-//              outputStyle: 'expanded',
-//              noLineComments: true,
-//              relativeAssets: false,
-//              assetCacheBuster: false
-//          }
-//      }
-//    },
-
-
-    compassMultiple: {
-      options: {
-        sassDir:   '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>',
-        cssDir:    '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>',
-        imagesDir: '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
-        environment: 'production',
-        outputStyle: 'expanded',
-        time: true
-      },
-      common : {},
+    //コマンド grunt build（すべてではない）
+    //不要ファイルを削除
+    clean: {
+      //init: [''],
+      build: ['_lib/','.sass-cache']
     },
 
-
-    autoprefixer: {
-      target: {
-        expand: true,
-        flatten: true,
-        src:  '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>*.css',
-        dest: '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>'
-      }
-    },
-    
-//    //cofeeコンパイル
-//    coffee: {
-//      options: {
-//        bare: true
-//      },
-//      files: {
-//        expand: true,
-//        cwd: "<%= dir.dev %><%= dir.projectRoot %><%= dir.coffee %>",
-//        src: ["**/*.coffee"],
-//        dest: "<%= dir.dev %><%= dir.projectRoot %><%= dir.js %>",
-//        ext: ".js"
-//      }
-//    },
 
 
     //_dev以下の監視
     watch: {
-      livereload: {
-        options: {
-            livereload: '<%= connect.options.livereload %>'
-        },
-        files: [
-            'gruntfile.js',
-            '<%= dir.dev %>**/*.html',
-            '<%= dir.dev %>**/*.js',
-            '<%= dir.dev %>**/*.css'
-        ]
-      },
       html: {
         files: '<%= dir.dev %><%= dir.projectRoot %>**/*.html'
       },
       scss: {
         files: '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>**/*.scss',
-        //tasks: ['compass']
-        tasks: ['compassMultiple']
+        tasks: ['compassMultiple','autoprefixer']
       },
-      js: {
-        files: '<%= dir.dev %><%= dir.projectRoot %><%= dir.js %>**/*.js',
-//        tasks: ['coffee']
+      script: {
+        files: '<%= dir.dev %><%= dir.projectRoot %><%= dir.script %>**/*.js',
+        tasks: ['uglify']
       }
     },
 
@@ -238,82 +165,135 @@ module.exports = function(grunt) {
     },
 
 
-    //コマンド　grunt release（すべてではない）
-    //_libを削除,release以下に納品ファイルまとめ
-    clean: {
-      init: ['_lib/'],
-      build: ['<%= dir.release %>']
+//    //cofeeコンパイル
+//    coffee: {
+//      options: {
+//        bare: true
+//      },
+//      files: {
+//        expand: true,
+//        cwd: "<%= dir.dev %><%= dir.projectRoot %><%= dir.coffee %>",
+//        src: ["**/*.coffee"],
+//        dest: "<%= dir.dev %><%= dir.projectRoot %><%= dir.js %>",
+//        ext: ".js"
+//      }
+//    },
+
+
+    compassMultiple: {
+      options: {
+        sassDir:   '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>',
+        cssDir:    '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>',
+        imagesDir: '<%= dir.dev %><%= dir.projectRoot %><%= dir.img %>',
+        environment: 'production',
+        outputStyle: 'expanded',
+        time: true
+      },
+      common : {}
     },
 
 
-    //CSSミニファイ
+    autoprefixer: {
+      target: {
+        expand: true,
+        flatten: true,
+        src:  '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>*.css',
+        dest: '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>'
+      }
+    },
+
+
+    //CSSミニファイ※build後
     cssmin: {
       combine: {
         files: {
-          '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>main_min.css': ['<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>normalize.css', '<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>main.css']
+          '<%= dir.build %><%= dir.projectRoot %><%= dir.css %>main.css': ['<%= dir.build %><%= dir.projectRoot %><%= dir.css %>main.css']
         }
       }
     },
 
 
+    //CSSの構文チェック
+    csslint: {
+      options: {
+        "import": false,
+        "bulletproof-font-face": false,
+        "compatible-vendor-prefixes": false,
+        "important": false,
+        "regex-selectors": false,
+        "adjoining-classes": false,
+        "unqualified-attributes": false,
+        "fallback-colors": false,
+        "zero-units": false,
+        "box-sizing": false,
+        "font-sizes": false
+      },
+      files: ['<%= dir.dev %><%= dir.projectRoot %><%= dir.css %>*.css']
+    },
+
     //JSのミニファイ
     uglify: {
-      js: {
+      options: {
+      },
+      js: { //このターゲットなくしたら動かない
         files: {
-          '<%= dir.dev %><%= dir.projectRoot %><%= dir.js %>script_min.js': ['<%= dir.dev %><%= dir.projectRoot %><%= dir.js %>script_a.js', '<%= dir.dev %><%= dir.projectRoot %><%= dir.js %>script_b.js']
+          '<%= dir.dev %><%= dir.projectRoot %><%= dir.js %>script.js': ['<%= dir.dev %><%= dir.projectRoot %><%= dir.script %>*.js']
         }
       }
+    },
+
+
+    //JSの構文チェック
+    jshint: {
+      options: {
+        ignores: ['<%= dir.dev %><%= dir.projectRoot %><%= dir.js %><%= dir.components %>*.js'],
+        //jshintrc: '.jshintrc'
+      },
+      all: {
+        files:['<%= dir.dev %><%= dir.projectRoot %><%= dir.js %>*.js']
+      }
     }
-    
+
   });
 
 
 
   //タスクをすべて読み込む
   require('load-grunt-tasks')(grunt);
-  
-//  
-//  //grunt initでbowerインストール＆コピー、もろもろディレクトリ構築
-//  grunt.registerTask("init", 
-//    function() {
-//      grunt.task.run('bower:install');
-//      grunt.task.run('copy:init');
-//      grunt.file.defaultEncoding = 'utf8';
-//      grunt.file.mkdir('htdocs');
-//      grunt.file.mkdir('htdocs/_dev');
-//      grunt.file.mkdir('htdocs/_dev/assets');
-//      grunt.file.mkdir('htdocs/_dev/assets/css');
-//      grunt.file.mkdir('htdocs/_dev/assets/img');
-//      grunt.file.mkdir('htdocs/_dev/assets/_scss');
-////    grunt.file.mkdir('htdocs/_dev/assets/_coffee');
-//      grunt.file.mkdir('htdocs/_dev/assets/js');
-//      grunt.file.mkdir('htdocs/_dev/assets/js/components');
-//      grunt.file.mkdir('htdocs/release');
-//      grunt.file.mkdir('htdocs/release/assets');
-//      grunt.file.mkdir('htdocs/release/assets/css');
-//      grunt.file.mkdir('htdocs/release/assets/img');
-//      grunt.file.mkdir('htdocs/release/assets/js');
-//      grunt.file.mkdir('htdocs/release/assets/js/components');
-////    return grunt.task.run('clean:init');
-//    }
-//  );
+
+
+  //grunt initでbowerインストール＆コピー、もろもろディレクトリ構築
+  grunt.registerTask("init",
+    function() {
+      grunt.task.run('bower:install');
+      grunt.task.run('copy:init');
+      grunt.file.defaultEncoding = 'utf8';
+      grunt.file.mkdir('www/build');
+      grunt.file.mkdir('www/build/assets');
+      grunt.file.mkdir('www/build/assets/css');
+      grunt.file.mkdir('www/build/assets/img');
+      grunt.file.mkdir('www/build/assets/js');
+      grunt.file.mkdir('www/build/assets/js/components');
+    }
+  );
 
 
   //gruntでローカルサーバーと監視
   grunt.registerTask("default", [
-    //'compass',
+    'uglify',
     'compassMultiple',
     'connect:livereload',
     'watch'
   ]);
 
 
-  //releaseでJS、CSSのミニファイ、release以下にコピー
-  return grunt.registerTask("release", [
+  //buildでJS、CSSのミニファイ、build以下にコピー
+  return grunt.registerTask("build", [
+    'jshint',
     'clean:build',
     'copy:build',
-    'uglify',
-    'cssmin'
+    'cssmin',
+    'csslint'
   ]);
 
 

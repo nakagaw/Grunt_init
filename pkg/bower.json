@@ -1,10 +1,9 @@
 {
   "name": "Grunt_init",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "main": "gruntfile.js",
   "homepage": "https://github.com/nakagaw/Grunt_init",
-  "authors": [
-    "nakagaw"
-  ],
+  "authors": "nakagaw",
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -16,10 +15,8 @@
   "dependencies": {
     "jquery": "~2.1.1",
     "html5-boilerplate": "~4.3.0",
-    "normalize-css": "~3.0.2",
     "normalize-scss": "~3.0.2",
     "modernizr": "~2.8.3",
     "backbone": "~1.1.2"
   }
-  エラー出るように
 }
