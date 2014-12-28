@@ -1,13 +1,6 @@
 # Grunt_init
 
-##init
-npm installから
-bowerとかゼロベースでスタートする場合
+##pkg以下
 
-##pkg
-ベースファイルとかはある程度やってある
-gruntでガシガシ開発する場合
-
-##test
-grunt init までやってある
+それ以外のファイル・フォルダは実験用
 
