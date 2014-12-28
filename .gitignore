@@ -1,4 +1,8 @@
+_bak_141115/
+_pkg/
 _lib/
+init/
+test/
 _bower_components/
 node_modules/
 .sass-cache/
