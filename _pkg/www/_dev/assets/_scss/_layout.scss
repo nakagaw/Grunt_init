@@ -1,0 +1,19 @@
+body {
+  padding: 100px;
+}
+
+.border-radius {
+  @include border-radius(10px);
+}
+
+.border-radius2 {
+  border-radius: 10px;
+}
+
+.gradient {
+  @include background-image(linear-gradient(to right, yellow, #000));
+}
+
+.gradient2 {
+  background-image: linear-gradient(to right, #ffffff, #000000);
+}
