@@ -137,6 +137,7 @@ module.exports = function(grunt) {
     watch: {
       html: {
         files: '<%= dir.dev %><%= dir.projectRoot %>**/*.html',
+        tasks: [],
         options: {
           livereload: true,
           nospawn: true
