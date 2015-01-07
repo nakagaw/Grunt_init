@@ -140,7 +140,11 @@ module.exports = function(grunt) {
         nospawn: true
       },
       html: {
-        files: '<%= dir.dev %><%= dir.projectRoot %>**/*.html'
+        files: '<%= dir.dev %><%= dir.projectRoot %>**/*.html',
+        options: {
+          livereload: true,
+          nospawn: true
+        }
       },
       scss: {
         files: '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>**/*.scss',
