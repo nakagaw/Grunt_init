@@ -141,6 +141,7 @@ module.exports = function(grunt) {
       },
       html: {
         files: '<%= dir.dev %><%= dir.projectRoot %>**/*.html',
+        tasks: [],
         options: {
           livereload: true,
           nospawn: true
