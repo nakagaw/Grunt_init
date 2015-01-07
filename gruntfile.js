@@ -140,12 +140,7 @@ module.exports = function(grunt) {
         nospawn: true
       },
       html: {
-        files: '<%= dir.dev %><%= dir.projectRoot %>**/*.html',
-        tasks: [],
-        options: {
-          livereload: true,
-          nospawn: true
-        }
+        files: '<%= dir.dev %><%= dir.projectRoot %>**/*.html'
       },
       scss: {
         files: '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>**/*.scss',
