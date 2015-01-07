@@ -136,7 +136,11 @@ module.exports = function(grunt) {
     //_dev以下の監視
     watch: {
       html: {
-        files: '<%= dir.dev %><%= dir.projectRoot %>**/*.html'
+        files: '<%= dir.dev %><%= dir.projectRoot %>**/*.html',
+        options: {
+          livereload: true,
+          nospawn: true
+        }
       },
       scss: {
         files: '<%= dir.dev %><%= dir.projectRoot %><%= dir.scss %>**/*.scss',
