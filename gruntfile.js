@@ -135,9 +135,12 @@ module.exports = function(grunt) {
 
     //_dev以下の監視
     watch: {
+      options: {
+        livereload: true,
+        nospawn: true
+      },
       html: {
         files: '<%= dir.dev %><%= dir.projectRoot %>**/*.html',
-        tasks: [],
         options: {
           livereload: true,
           nospawn: true
